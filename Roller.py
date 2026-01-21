@@ -3,6 +3,7 @@ import random
 
 #for the GUI
 from tkinter import *
+import tkinter as tk
 
 #give the amount of d6 needed to roll for an attack and return the array
 def roll_normal(rolls):
@@ -30,13 +31,21 @@ def total_roll(rolls):
 
 #command for the roll button
 def roll_button():
-    display.delete(1.0, END)
-    roll_number = roll.get()
+    
+    roll_number = int(Spinbox.get(roller))
 
     pilot_roll = random.randint(1, 6)
 
     roll_array = roll_normal(roll_number)
     pilot_array = add_pilot_roll(roll_array, pilot_roll)
+
+    output = ("Roll: " + str(roll_array) + "\nPilot Roll: " + str(pilot_roll) + 
+        "\nRolls with pilot Die: " + str(pilot_array) + "\nTotal: " + str(total_roll(pilot_array)))
+    display.config(text=output)
+
+    
+
+    
 
 
 
@@ -50,21 +59,26 @@ root = Tk()
 root.title('Battletech Dice Roller')
 
 #sets the size of the GUI
-root.geometry("500x300")
+root.geometry("1200x300")
 
 #Label for spinner
-Label(master=root, text='D6 to Roll:').grid(row=0, column=0)
+roll_label = tk.Label(master=root, text='D6 to Roll:')
+roll_label.grid(row=0, column=0)
 
 #Spinner for D6 to roll
-roller = Spinbox(root, from_=1, to=100, width=10, wrap=True).grid(row=0, column=1)
+roller = tk.Spinbox(root, from_=1, to=100, width=10, wrap=True)
+roller.grid(row=0, column=1)
 
 #adding a confirm button
-roll = Button(root, text="Roll", width=20, command=roll_button).grid(row=1, column=0)
+roll = tk.Button(root, text="Roll", width=20, command=roll_button)
+roll.grid(row=0, column=3)
 
 #display for rolls
-display = Text(root, height=2, width=60, state='disabled', relief=SUNKEN).grid(row=2,column=0)
+display = Label(master=root, font=('Ariel', 16))
+display.grid(row=3, column=4)
 
-
+roll_lab2 = Label(master=root, text='Rolls: ', font=('Ariel', 16))
+roll_lab2.grid(row=2, column=3)
 #initalizes main window - NOTE: put widgets before this
 root.mainloop()
 
