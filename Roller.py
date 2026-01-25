@@ -10,6 +10,8 @@ def roll_normal(rolls):
     roll_block = []
     for i in range(rolls):
         roll_block.append(random.randint(1,6))
+
+    roll_block.sort()
     
     return roll_block
 
@@ -22,12 +24,6 @@ def add_pilot_roll(pilot_roll, roll):
 
     return new_array
 
-def total_roll(rolls):
-    total = 0
-    for i in rolls:
-        total += i
-
-    return total
 
 #command for the roll button
 def roll_button():
@@ -39,8 +35,14 @@ def roll_button():
     roll_array = roll_normal(roll_number)
     pilot_array = add_pilot_roll(roll_array, pilot_roll)
 
+    hits= 0
+    for i in pilot_array:
+        if i >= int(Spinbox.get(to_hit_spinner)):
+            hits += 1
+    
+
     output = ("Roll: " + str(roll_array) + "\nPilot Roll: " + str(pilot_roll) + 
-        "\nRolls with pilot Die: " + str(pilot_array) + "\nTotal: " + str(total_roll(pilot_array)))
+        "\nRolls with pilot Die: " + str(pilot_array) + "\nHits Against TMM: " + str(hits))
     display.config(text=output)
 
     
@@ -79,6 +81,15 @@ display.grid(row=3, column=4)
 
 roll_lab2 = Label(master=root, text='Rolls: ', font=('Ariel', 16))
 roll_lab2.grid(row=2, column=3)
+
+#Spinner for the TMM/AC to hit
+to_hit_spinner = tk.Spinbox(master=root, from_=1, to=20, width=10, wrap=True)
+to_hit_spinner.grid(row=1, column=1)
+
+to_hit_label = tk.Label(master=root, text="TMM/To Hit: ")
+to_hit_label.grid(row=1, column=0)
+
+
 #initalizes main window - NOTE: put widgets before this
 root.mainloop()
 
